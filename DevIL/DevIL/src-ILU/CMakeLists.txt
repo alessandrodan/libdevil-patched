@@ -38,6 +38,21 @@ if(WIN32)
 endif(WIN32)
 
 
+if (WIN32)
+    if (BUILD_SHARED_LIBS)
+        set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} /MDd")
+        set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MDd")
+        set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} /MD")
+        set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MD")
+    else()
+        set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} /MTd")
+        set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
+        set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} /MT")
+        set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
+    endif()
+endif()
+
+
 source_group("Source Files" FILES src/*.cpp)
 source_group("Header Files" FILES ${ILU_INC} )
 source_group("Resource Files" FILES ${ILU_RSRC} )
@@ -70,6 +85,10 @@ endif(UNICODE)
 set_target_properties(ILU PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${LIBDIR})
 set_target_properties(ILU PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${LIBDIR})
 set_target_properties(ILU PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${LIBDIR})
+
+if(WIN32)
+	set_target_properties(ILU PROPERTIES DEBUG_POSTFIX "d")
+endif(WIN32)
 
 if(UNICODE)
 	MESSAGE("Compiling ILU Unicode")
